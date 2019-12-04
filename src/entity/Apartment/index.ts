@@ -15,7 +15,7 @@ export class Apartment {
   id: number;
 
   @Min(0)
-  @Max(100000)
+  @Max(10000)
   @Column('int')
   @Expose()
   @IsInt()
@@ -23,7 +23,7 @@ export class Apartment {
 
   @IsInt()
   @Min(0)
-  @Max(10000)
+  @Max(100)
   @Column('int')
   @Expose()
   rooms: number;
@@ -37,7 +37,7 @@ export class Apartment {
   price: number;
 
   @IsInt()
-  @Min(1)
+  @Min(1900)
   @Max(new Date().getFullYear())
   @Column('int')
   @Expose()
