@@ -10,7 +10,10 @@ export class ApartmentController {
   private addressRepository = getRepository(Address);
 
   async all(request: Request, response: Response, next: NextFunction) {
-    return this.apartmentRepository.find();
+    return this.apartmentRepository
+      .createQueryBuilder('apartment')
+      .leftJoinAndSelect('apartment.address', 'address')
+      .getMany();
   }
 
   async one(request: Request, response: Response, next: NextFunction) {
