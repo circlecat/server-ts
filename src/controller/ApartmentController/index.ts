@@ -17,7 +17,11 @@ export class ApartmentController {
   }
 
   async one(request: Request, response: Response, next: NextFunction) {
-    return this.apartmentRepository.findOne(request.params.id);
+    return this.apartmentRepository
+      .createQueryBuilder('apartment')
+      .leftJoinAndSelect('apartment.address', 'address')
+      .whereInIds(request.params.id)
+      .getOne();
   }
 
   async save(request: Request, response: Response, next: NextFunction) {
