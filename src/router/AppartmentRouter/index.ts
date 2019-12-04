@@ -1,6 +1,6 @@
-import { ApartmentController } from './controller/ApartmentController';
+import { ApartmentController } from '../../controller/ApartmentController';
 
-export const Routes = [
+export const AppartmentRoutes = [
   {
     method: 'get',
     route: '/apartment',
@@ -24,5 +24,17 @@ export const Routes = [
     route: '/apartment/:id',
     controller: ApartmentController,
     action: 'remove',
+  },
+  {
+    method: 'get',
+    route: '/apartment/rent-out/:id',
+    controller: ApartmentController,
+    action: 'rentOut',
+  },
+  {
+    method: 'get',
+    route: '/apartment/stop-rent-out/:id',
+    controller: ApartmentController,
+    action: 'stopRentOut',
   },
 ];

@@ -29,6 +29,13 @@ export class ApartmentController {
         return errors;
       }
 
+      const isAddressExist = await this.addressRepository.findOne(address);
+
+      if (isAddressExist) {
+        response.status(400);
+        return { status: 'ADDRESS_ALREADY_EXIST' };
+      }
+
       return this.apartmentRepository.save(apartment).then(apartment => {
         address.apartment = apartment;
         return this.addressRepository.save(address);
@@ -45,6 +52,55 @@ export class ApartmentController {
         return;
       }
       return this.apartmentRepository.remove(apartmentToRemove);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async rentOut(request: Request, response: Response, next: NextFunction) {
+    try {
+      const apartmentToRentOut = await this.apartmentRepository.findOne(request.params.id);
+      if (!apartmentToRentOut) {
+        return;
+      }
+
+      if (apartmentToRentOut.isRented) {
+        response.status(400);
+        return { status: 'APARTMENT_ALREADY_RENTED_OUT' };
+      }
+
+      const now = new Date();
+      const afterYear = new Date(now.getFullYear() + 1, now.getMonth(), now.getDate());
+
+      apartmentToRentOut.isRented = true;
+      apartmentToRentOut.rentStartDate = now;
+      apartmentToRentOut.rentEndDate = afterYear;
+
+      return this.apartmentRepository.save(apartmentToRentOut);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async stopRentOut(request: Request, response: Response, next: NextFunction) {
+    try {
+      const apartmentToRentOut = await this.apartmentRepository.findOne(request.params.id);
+      if (!apartmentToRentOut) {
+        return;
+      }
+
+      if (!apartmentToRentOut.isRented) {
+        response.status(400);
+        return { status: 'APARTMENT_DOES_NOT_RENTED_OUT' };
+      }
+
+      const now = new Date();
+
+      apartmentToRentOut.isRented = false;
+      apartmentToRentOut.rentStartDate = null;
+      apartmentToRentOut.rentEndDate = null;
+
+      return this.apartmentRepository.save(apartmentToRentOut);
     } catch (error) {
       next(error);
     }

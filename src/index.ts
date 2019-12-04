@@ -4,7 +4,7 @@ import * as express from 'express';
 import * as bodyParser from 'body-parser';
 import { config } from 'dotenv';
 import { Request, Response } from 'express';
-import { Routes } from './routes';
+import { Routes } from './router';
 
 config();
 
@@ -19,9 +19,13 @@ config();
     (app as any)[route.method](route.route, (req: Request, res: Response, next: Function) => {
       const result = new (route.controller as any)()[route.action](req, res, next);
       if (result instanceof Promise) {
-        result.then(result =>
-          result !== null && result !== undefined ? res.json(result) : res.status(400).end('REQEST_PARAMS_ERROR'),
-        );
+        result
+          .then(result =>
+            result !== null && result !== undefined
+              ? res.json(result)
+              : res.status(400).send({ status: 'REQEST_PARAMS_ERROR' }),
+          )
+          .catch(console.log);
       } else if (result !== null && result !== undefined) {
         res.json(result);
       }
