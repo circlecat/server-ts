@@ -19,10 +19,29 @@ config();
     (app as any)[route.method](route.route, (req: Request, res: Response, next: Function) => {
       const result = new (route.controller as any)()[route.action](req, res, next);
       if (result instanceof Promise) {
-        result.then(result => (result !== null && result !== undefined ? res.send(result) : undefined));
+        result.then(result =>
+          result !== null && result !== undefined ? res.json(result) : res.status(400).end('REQEST_PARAMS_ERROR'),
+        );
       } else if (result !== null && result !== undefined) {
         res.json(result);
       }
+    });
+  });
+
+  app.use((req: Request, res: Response, next: Function) => {
+    const err: any = new Error('Not Found');
+    err.status = 404;
+    next(err);
+  });
+
+  app.use((err, _req, res: Response, _next) => {
+    res.status(err.status || 500);
+    console.log(err.stack);
+    res.json({
+      errors: {
+        message: err.message,
+        error: +process.env.PRODUCTION ? null : err,
+      },
     });
   });
 
