@@ -98,7 +98,7 @@ export class ApartmentController {
 
       if (!apartmentToRentOut.isRented) {
         response.status(400);
-        return { status: 'APARTMENT_DOES_NOT_RENTED_OUT' };
+        return { status: 'APARTMENT_NOT_RENTED_OUT' };
       }
 
       const now = new Date();
