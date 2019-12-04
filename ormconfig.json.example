@@ -1,0 +1,16 @@
+{
+   "type": "postgres",
+   "host": "localhost",
+   "port": 5432,
+   "username": "postgres",
+   "password": "1234",
+   "database": "techstack",
+   "synchronize": true,
+   "logging": false,
+   "entities": [
+      "src/entity/**/*.ts"
+   ],
+   "cli": {
+      "entitiesDir": "src/entity"
+   }
+}
