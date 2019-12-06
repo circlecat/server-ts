@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToOne } from 'typeorm';
 import { IsInt, Min, Max } from 'class-validator';
-import Address from '../Address';
+import Address from './Address';
 import { Expose } from 'class-transformer';
 
 export enum repairType {

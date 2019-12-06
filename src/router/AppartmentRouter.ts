@@ -1,4 +1,4 @@
-import { ApartmentController } from '../../controller/ApartmentController';
+import { ApartmentController } from '../controller/ApartmentController/ApartmentController';
 
 export const AppartmentRoutes = [
   {
@@ -6,6 +6,18 @@ export const AppartmentRoutes = [
     route: '/apartment',
     controller: ApartmentController,
     action: 'all',
+  },
+  {
+    method: 'get',
+    route: '/apartment/free',
+    controller: ApartmentController,
+    action: 'allFree',
+  },
+  {
+    method: 'get',
+    route: '/apartment/rented',
+    controller: ApartmentController,
+    action: 'allRented',
   },
   {
     method: 'get',

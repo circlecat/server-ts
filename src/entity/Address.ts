@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn } from 'typeorm';
 import { Length, IsInt, Min, Max } from 'class-validator';
-import { Apartment } from '../Apartment';
+import { Apartment } from './Apartment';
 import { Expose } from 'class-transformer';
 
 @Entity()
