@@ -17,7 +17,9 @@ config();
 
   // Routes
   Routes.forEach(route => {
+    // adding new route. Example: app[get]('/route', callback);
     (app as any)[route.method](route.route, async (req: Request, res: Response, next: Function) => {
+      // creating and executing controller action || catch errors
       try {
         await new (route.controller as any)()[route.action](req, res, next);
       } catch (error) {
