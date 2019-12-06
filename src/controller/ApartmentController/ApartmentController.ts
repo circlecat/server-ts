@@ -51,7 +51,7 @@ export class ApartmentController {
   }
 
   async save(request: Request, response: Response) {
-    const apartment = plainToClass(Apartment, request.body.apartment, { excludeExtraneousValues: true });
+    const apartment = plainToClass(Apartment, request.body, { excludeExtraneousValues: true });
     const address = plainToClass(Address, request.body.address, { excludeExtraneousValues: true });
 
     const appartmentErrors = await validate(apartment, { validationError: { target: false } });
