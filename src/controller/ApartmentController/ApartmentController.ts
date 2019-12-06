@@ -1,6 +1,6 @@
 import { getRepository } from 'typeorm';
 import { Request, Response } from 'express';
-import { Apartment } from '../../entity/Apartment';
+import { Apartment, repairType } from '../../entity/Apartment';
 import Address from '../../entity/Address';
 import { plainToClass } from 'class-transformer';
 import { validate } from 'class-validator';
@@ -37,10 +37,12 @@ export class ApartmentController {
   }
 
   async one(request: Request, response: Response) {
+    const { id } = request.params;
+
     const res = await this.apartmentRepository
       .createQueryBuilder('apartment')
       .leftJoinAndSelect('apartment.address', 'address')
-      .whereInIds(request.params.id)
+      .whereInIds(id)
       .getOne();
 
     if (!res) {
@@ -120,6 +122,10 @@ export class ApartmentController {
 
     await this.apartmentRepository.save(apartmentToRentOut);
 
-    response.send();
+    return response.send();
+  }
+
+  getRepairType(request: Request, response: Response) {
+    return response.json(repairType);
   }
 }

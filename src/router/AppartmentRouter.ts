@@ -3,6 +3,12 @@ import { ApartmentController } from '../controller/ApartmentController/Apartment
 export const AppartmentRoutes = [
   {
     method: 'get',
+    route: '/apartment/get-repair-type',
+    controller: ApartmentController,
+    action: 'getRepairType',
+  },
+  {
+    method: 'get',
     route: '/apartment',
     controller: ApartmentController,
     action: 'all',
