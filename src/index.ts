@@ -2,6 +2,7 @@ import 'reflect-metadata';
 import { createConnection } from 'typeorm';
 import * as express from 'express';
 import * as bodyParser from 'body-parser';
+import * as cors from 'cors';
 import { config } from 'dotenv';
 import { Request, Response } from 'express';
 import { Routes } from './router';
@@ -11,6 +12,7 @@ config();
 (async () => {
   const app = express();
   app.use(bodyParser.json());
+  app.use(cors());
 
   await createConnection();
   console.log('PG connected');
