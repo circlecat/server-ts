@@ -166,6 +166,6 @@ export class ApartmentController {
   }
 
   getRepairType(request: Request, response: Response) {
-    return response.json(repairType);
+    return response.json(Object.keys(repairType).map(e => (e = repairType[e])));
   }
 }
