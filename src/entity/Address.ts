@@ -39,6 +39,9 @@ class Address {
   )
   @JoinColumn()
   apartment: Apartment;
+
+  @Column('int')
+  apartmentId: number;
 }
 
 export default Address;

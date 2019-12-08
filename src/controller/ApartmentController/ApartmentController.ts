@@ -56,9 +56,9 @@ export class ApartmentController {
     const apartment = plainToClass(Apartment, request.body, { excludeExtraneousValues: true });
     const address = plainToClass(Address, request.body.address, { excludeExtraneousValues: true });
 
-    const appartmentErrors = await validate(apartment, { validationError: { target: false } });
+    const apartmentErrors = await validate(apartment, { validationError: { target: false } });
     const addressErrors = await validate(address, { validationError: { target: false } });
-    const errors = [...appartmentErrors, ...addressErrors];
+    const errors = [...apartmentErrors, ...addressErrors];
     if (errors.length > 0) {
       return response.status(422).json(errors);
     }
@@ -72,6 +72,46 @@ export class ApartmentController {
     const apartmentRes = await this.apartmentRepository.save(apartment);
     address.apartment = apartmentRes;
     await this.addressRepository.save(address);
+
+    return response.send();
+  }
+
+  async update(request: Request, response: Response) {
+    const apartmentId = request.body.id;
+    const addressId = request.body.address.id;
+
+    let address = await this.addressRepository.findOne({ where: { id: addressId } });
+    let apartment = await this.apartmentRepository.findOne({ where: { id: apartmentId } });
+
+    if (apartmentId !== address.apartmentId) {
+      return response.status(status.REQEST_PARAMS_ERROR.statusCode).send(status.REQEST_PARAMS_ERROR.text);
+    }
+
+    if (!apartment || !address) {
+      return response.status(status.REQEST_PARAMS_ERROR.statusCode).send(status.REQEST_PARAMS_ERROR.text);
+    }
+
+    const apartmentNew = plainToClass(Apartment, request.body, { excludeExtraneousValues: true });
+    const addressNew = plainToClass(Address, request.body.address, { excludeExtraneousValues: true });
+
+    const apartmentErrors = await validate(apartmentNew, { validationError: { target: false } });
+    const addressErrors = await validate(addressNew, { validationError: { target: false } });
+    const errors = [...apartmentErrors, ...addressErrors];
+    if (errors.length > 0) {
+      return response.status(422).json(errors);
+    }
+
+    const isAddressExist = await this.addressRepository.findOne(addressNew);
+
+    if (isAddressExist && isAddressExist.id !== address.id) {
+      return response.status(status.ADDRESS_ALREADY_EXIST.statusCode).send(status.ADDRESS_ALREADY_EXIST.text);
+    }
+
+    address = { ...address, ...addressNew };
+    apartment = { ...apartment, ...apartmentNew };
+
+    await this.addressRepository.save(address);
+    await this.apartmentRepository.save(apartment);
 
     return response.send();
   }

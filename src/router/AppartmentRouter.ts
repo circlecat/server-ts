@@ -38,6 +38,12 @@ export const AppartmentRoutes = [
     action: 'save',
   },
   {
+    method: 'put',
+    route: '/apartment',
+    controller: ApartmentController,
+    action: 'update',
+  },
+  {
     method: 'delete',
     route: '/apartment/:id',
     controller: ApartmentController,
